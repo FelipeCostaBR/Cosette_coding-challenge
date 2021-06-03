@@ -15,7 +15,7 @@
 ## :camera_flash: Product List - usage instructions
 
 
-![Job Board gif](/cosette_app.mov "app")
+![product list video](/cosette_app.mp4 "app")
 
 
 ### Technologies and Dependencies
