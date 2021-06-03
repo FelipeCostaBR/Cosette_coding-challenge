@@ -12,12 +12,6 @@
 * Shopify Products: https://shopify.dev/docs/admin-api/rest/reference/products
 
 
-## :camera_flash: Product List - usage instructions
-
-
-![product list video](/cosette_app.mp4 "app")
-
-
 ### Technologies and Dependencies
 * Programming language - Typescript
 
