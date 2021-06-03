@@ -20,7 +20,7 @@ export const useProduct = ({ url }: URL) => {
 
     useEffect(() => {
         async function fetchData(): Promise<void> {
-            const { data } = await api.get('/products');
+            const { data } = await api.get(url);
             setProducts(data.products);
         }
         fetchData();

@@ -1,19 +1,42 @@
-import React, { FormEvent } from 'react';
-import { ProductCarousel } from '../../components/ProductCarousel';
-import { useProduct } from '../../hooks/useProduct';
+import React, { FormEvent, useState } from 'react';
 
+import { Loading } from '../../components/Loading';
+import { ProductCarousel } from '../../components/ProductCarousel';
+
+import { useProduct } from '../../hooks/useProduct';
+import { useToast } from '../../provider/toast';
 import api from '../../services/api';
 
 import { Container, Card, CardField, CardTextContent, Button } from './styles';
 
 export const Dashboard: React.FC = () => {
+    const [loading, setLoading] = useState(false);
     const { products } = useProduct({ url: '/products' });
+    const { addToast } = useToast();
 
     const handleExportShopify = async (e: FormEvent, index: number) => {
         e.preventDefault();
         const product = products[index];
-        const { data } = await api.post('/products/create', { product });
-        console.log(data);
+        setLoading(true);
+
+        try {
+            const { data } = await api.post('/products/create', { product });
+            if (data) {
+                setLoading(false);
+            }
+            addToast({
+                type: 'success',
+                title: 'Successful!',
+                description: data.message,
+            });
+        } catch (error) {
+            setLoading(false);
+            addToast({
+                type: 'error',
+                title: 'Error during export',
+                description: 'Something wrong to export, try again!',
+            });
+        }
     };
 
     return (
@@ -31,8 +54,7 @@ export const Dashboard: React.FC = () => {
                             <p>Quantity: {product.qty}</p>
                         </CardTextContent>
                     </CardField>
-
-                    <Button type={'submit'}>EXPORT</Button>
+                    {loading ? <Loading /> : <Button type={'submit'}>EXPORT</Button>}
                 </Card>
             ))}
         </Container>
