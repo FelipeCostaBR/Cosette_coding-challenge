@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 
+import { AppError } from '../../components/Error';
 import { Loading } from '../../components/Loading';
 import { ProductCarousel } from '../../components/ProductCarousel';
 
@@ -11,7 +12,7 @@ import { Container, Card, CardField, CardTextContent, Button } from './styles';
 
 export const Dashboard: React.FC = () => {
     const [loading, setLoading] = useState(false);
-    const { products } = useProduct({ url: '/products' });
+    const { products, httpStatusCode, httpErrorMessage } = useProduct({ url: '/products' });
     const { addToast } = useToast();
 
     const handleExportShopify = async (e: FormEvent, index: number) => {
@@ -24,6 +25,7 @@ export const Dashboard: React.FC = () => {
             if (data) {
                 setLoading(false);
             }
+
             addToast({
                 type: 'success',
                 title: 'Successful!',
@@ -38,6 +40,10 @@ export const Dashboard: React.FC = () => {
             });
         }
     };
+
+    if (httpStatusCode && httpErrorMessage) {
+        return <AppError code={httpStatusCode} message={httpErrorMessage} />;
+    }
 
     return (
         <Container>
